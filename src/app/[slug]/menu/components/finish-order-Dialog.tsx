@@ -1,9 +1,14 @@
 'use client'
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ConsumptionMethod } from "@prisma/client";
+import { Loader2Icon } from "lucide-react";
+import { useParams, useSearchParams } from "next/navigation";
+import { useContext, useTransition } from "react";
 // import { Loader2Icon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import {PatternFormat} from 'react-number-format'
+import { toast } from "sonner";
 import {z} from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -20,7 +25,9 @@ import {
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
+import { createOrder } from "../actions/create.order";
 import { isValidCpf } from "../context/helpers/cpf";
+import { CartContext } from "../context/page";
 
 
 const formSchema = z.object({
@@ -41,6 +48,10 @@ interface IFinishOrderDialogProps{
 }
 
 const FinishOrderDialog = ({Open, onOpenChange}:IFinishOrderDialogProps) => {
+    const {products} = useContext(CartContext)
+    const {slug} = useParams< {slug: string }>()
+    const searchParams = useSearchParams()
+    const [isLoading, startTransition] = useTransition();
     const form = useForm<FormSchema>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -50,8 +61,23 @@ const FinishOrderDialog = ({Open, onOpenChange}:IFinishOrderDialogProps) => {
         shouldUnregister: true
     })
 
-    const onSubmit = (data:FormSchema) =>{
-        console.log(data)
+    const onSubmit = async (data:FormSchema) =>{
+        try{
+            const consumptionMethod = searchParams.get("consumptionMethod") as ConsumptionMethod
+            startTransition( async () => {
+                await createOrder({
+                  consumptionMethod,
+                  customerCpf: data.cpf,
+                  customerName: data.name,
+                  products,
+                  slug,
+                }); 
+                onOpenChange(false)
+                toast.success("Pedido finalizado com sucesso")   
+            })
+        }catch(error){
+            console.log(error)
+        }
     }
     return ( 
         <Drawer open={Open} onOpenChange={onOpenChange}>
@@ -102,9 +128,9 @@ const FinishOrderDialog = ({Open, onOpenChange}:IFinishOrderDialogProps) => {
                             type="submit"
                             variant="destructive"
                             className="rounded-full"
-                            // disabled={isLoading}
+                            disabled={isLoading}
                             >
-                            {/* {isLoading && <Loader2Icon className="animate-spin" />} */}
+                            {isLoading && <Loader2Icon className="animate-spin" />}
                             Finalizar
                             </Button>
                             <DrawerClose asChild>
