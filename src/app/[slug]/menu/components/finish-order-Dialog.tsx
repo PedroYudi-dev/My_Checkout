@@ -26,8 +26,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 
 import { createOrder } from "../actions/create.order";
+import { CartContext } from "../context/cart-context";
 import { isValidCpf } from "../context/helpers/cpf";
-import { CartContext } from "../context/page";
 
 
 const formSchema = z.object({

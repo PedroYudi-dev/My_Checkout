@@ -6,7 +6,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle} from "@/components/ui/she
 import { formatCurrency } from "@/helpers/format-currency";
 
 import CartProductItem from "../[productId]/components/cart-products-item";
-import { CartContext } from "../context/page";
+import { CartContext } from "../context/cart-context";
 import FinishOrderDialog from "./finish-order-Dialog";
 
 const CartSheet = () => {

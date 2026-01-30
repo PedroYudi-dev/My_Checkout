@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { formatCurrency } from "@/helpers/format-currency";
 
-import { CartContext } from "../context/page";
+import { CartContext } from "../context/cart-context";
 import CartSheet from "./cart-sheet";
 import Products from "./products";
 

@@ -5,7 +5,7 @@ import {  Poppins } from "next/font/google";
 
 import { Toaster } from "@/components/ui/sonner";
 
-import { CartProvaider } from "./[slug]/menu/context/page";
+import { CartProvider } from "./[slug]/menu/context/cart-context";
 
 const poppins = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -25,9 +25,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.className} antialiased`}>
-        <CartProvaider>
+        <CartProvider>
           {children}  
-        </CartProvaider>
+        </CartProvider>
         <Toaster/>
       </body>
     </html>

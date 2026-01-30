@@ -10,13 +10,24 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { formatCurrency } from "@/helpers/format-currency";
 
 import CartSheet from "../../components/cart-sheet";
-import { CartContext } from "../../context/page";
+import { CartContext } from "../../context/cart-context";
 
+
+type ProductWithRestaurantPreview = Prisma.ProductGetPayload<{
+  include: {
+    restaurant: {
+      select: {
+        name: true
+        avatarImageUrl: true
+        slug: true
+      }
+    }
+  }
+}>
 
 interface IProudctDetailsProps {
-    product: Prisma.ProductGetPayload<{include: {restaurant: true}}>
+  product: ProductWithRestaurantPreview
 }
-
 const ProductDetails = ({product }:IProudctDetailsProps) => {
     const {toggleCart, addProduct} = useContext(CartContext)
     const [quantity, setQuantity] = useState<number>(1)
