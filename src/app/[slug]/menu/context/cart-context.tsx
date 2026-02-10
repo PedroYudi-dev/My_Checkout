@@ -69,7 +69,7 @@ export const CartProvider = ({children}: {children: ReactNode}) => {
     const decreaseProductQuantity = (productId: string) => {
         setProducts(prevProducts => {
             return prevProducts.map((prevProduct) => {
-               if(prevProduct.id != productId){
+               if(prevProduct.id !== productId){
                     return prevProduct
                }
                 if(prevProduct.quantity === 1){
@@ -88,7 +88,7 @@ export const CartProvider = ({children}: {children: ReactNode}) => {
     const increaseProductQuantity = (productId: string) => {
         setProducts(prevProducts => {
             return prevProducts.map((prevProduct) => {
-               if(prevProduct.id != productId){
+               if(prevProduct.id !== productId){
                     return prevProduct
                }
                 return{
@@ -102,7 +102,7 @@ export const CartProvider = ({children}: {children: ReactNode}) => {
     }
 
     const removeProduct = (productId: string) =>{
-        setProducts(prevProducts => prevProducts.filter(prevProduct => prevProduct.id != productId))
+        setProducts(prevProducts => prevProducts.filter(prevProduct => prevProduct.id !== productId))
     }
     return(
         <CartContext.Provider value={{isOpen, products, toggleCart, addProduct, decreaseProductQuantity, increaseProductQuantity, removeProduct, total, totalQuantity}}>
